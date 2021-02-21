@@ -7,13 +7,13 @@ test('Can get office number via constructor', () => {
     expect(employee.officeNumber).toBe(testValue);
 });
 
-test('Can get office number via getOfficeNumber()', () => {
+test('Can get office number via getOfficeNumber() method', () => {
     const testValue = 100;
     const employee = new Manager('John', 1, 'test@example.com', testValue);
     expect(employee.getOfficeNumber()).toBe(testValue);
 });
 
-test('Can getRole() return "Employee"', () => {
+test('Can getRole() method return "Employee"', () => {
     const testValue = 'Manager';
     const employee = new Manager('John', 1, 'test@example.com', 100);
     expect(employee.getRole()).toBe(testValue);
