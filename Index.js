@@ -4,7 +4,6 @@ const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const { writeFile, copyFile } = require("./utils/generate-page");
 
 let teamListArray = [];
 
@@ -103,7 +102,7 @@ const addEngineer = () => {
     ])
     .then(function(data) {
         const name = data.name;
-        const id = teamListArray.length + 1;
+        const id = teamListArray.length;
         const email = data.email;
         const github = data.github;
         const teamMember = new Engineer(name, id, email, github);
@@ -143,7 +142,7 @@ const addIntern = () => {
     ])
     .then(function(data) {
         const name = data.name;
-        const id = teamListArray.length + 1;
+        const id = teamListArray.length;
         const email = data.email;
         const school = data.school;
         const teamMember = new Intern(name, id, email, school);
@@ -173,10 +172,102 @@ const addTeamMembers = () => {
                 break;
 
             case "No, my Team is complete":
+                pageGenerator();
                 break;
         }
     });
 };
 
-userPrompt();
+// add function to generate the html page
+let pageGenerator = function() {
+    const htmlArray = [];
+    const htmlBeginning = `
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Team Profile Generator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>${teamListArray[0]}</h1>
+    </header>
+
+    <main>
+    `
+    htmlArray.push(htmlBeginning);
+    for (let i = 1; i < teamListArray.length; i++) {
+        let obj = `
+        <section class="member-card">
+            <div class="card-top">
+                <h2>${teamListArray[i].name}</h2>
+                `
+                if (teamListArray[i].title === "Manager") {
+                    obj += `
+                <h2><i class="fa fa-coffee"> ${teamListArray[i].title}</i></h2>
+                `
+                }
+                if (teamListArray[i].title === "Engineer") {
+                    obj += `
+                <h2><i class="fa fa-id-badge"> ${teamListArray[i].title}</i></h2>
+                `
+                }
+                if (teamListArray[i].title === "Intern") {
+                    obj += `
+                <h2><i class="fa fa-graduation-cap"> ${teamListArray[i].title}</i></h2>
+                `
+                }
+                obj += `
+                </div>
+            <ul class="card-bottom">
+                <li>Employee ID: ${teamListArray[i].id}</li>
+                <li>Email: <a href="mailto:${teamListArray[i].email}">${teamListArray[i].email}</a></li>
+                `
+                if (teamListArray[i].officeNumber) {
+                    obj += `
+                    <li>Office Number: ${teamListArray[i].officeNumber}</li>
+                    `
+                }
+                if (teamListArray[i].github) {
+                    obj += `
+                    <li>Github: <a href="https://github.com/${teamListArray[i].github}" target="_blank">${teamListArray[i].github}</a></li>
+                    `
+                }
+                if (teamListArray[i].school) {
+                    obj += `
+                    <li>School: ${teamListArray[i].school}</li>
+                    `
+                }
+                obj += `  
+            </ul>
+        </section>
+        `
+        htmlArray.push(obj);
+     }
+     
+     const htmlEnd = `
+    </main>
+  </body>
+</html>
+`
+htmlArray.push(htmlEnd);
+fs.writeFile(`./dist/index.html`, htmlArray.join(""), function (err) {
+
+});
+fs.copyFile('./src/style.css', './dist/style.css', err => { 
+
+});
+};
+
+userPrompt()
+.catch(err => {
+console.log(err);
+});
 
