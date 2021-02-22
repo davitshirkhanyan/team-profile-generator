@@ -14,6 +14,8 @@ A Node.js command-line application that takes in information about employees on 
 * Javascript
 * Node.js
 
+![team-profile-generator](https://user-images.githubusercontent.com/74809116/108668159-7fe82e00-748f-11eb-95dd-11dddddf6cdb.gif)
+
 ## Installation and Setup Instructions
 
 * Clone down this repository. You will need **git clone** and **SSH key** or **HTTPS** to install the project on you machine
