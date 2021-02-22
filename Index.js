@@ -68,6 +68,7 @@ const addManager = () => {
         const officeNumber = data.officeNumber;
         const teamMember = new Manager(name, id, email, officeNumber);
         teamListArray.push(teamMember);
+        addTeamMembers();
     });
 };
 
@@ -107,6 +108,7 @@ const addEngineer = () => {
         const github = data.github;
         const teamMember = new Engineer(name, id, email, github);
         teamListArray.push(teamMember);
+        addTeamMembers();
     });
 };
 
@@ -146,9 +148,35 @@ const addIntern = () => {
         const school = data.school;
         const teamMember = new Intern(name, id, email, school);
         teamListArray.push(teamMember);
+        addTeamMembers();
     });
 };
 
+// add function to get team members data
+const addTeamMembers = () => {
+    return inquirer.prompt([
+        {
+            name: "addMember",
+            type: "list",
+            message: "Would you like to add more team members?",
+            choices: ["Yes, add an Engineer", "Yes, add an Intern", "No, my Team is complete"]
+        }
+    ])
+    .then(function(data) {
+        switch (data.addMember) {
+            case "Yes, add an Engineer":
+                addEngineer();
+                break;
+
+            case "Yes, add an Intern":
+                addIntern();
+                break;
+
+            case "No, my Team is complete":
+                break;
+        }
+    });
+};
 
 userPrompt();
 
