@@ -96,7 +96,7 @@ const addEngineer = () => {
 
         {
             name: "github",
-            type: "number",
+            type: "input",
             message: "Please enter the Engineer's Github profile"
         }
     ])
@@ -109,6 +109,46 @@ const addEngineer = () => {
         teamListArray.push(teamMember);
     });
 };
+
+// add function to get intern's data
+const addIntern = () => {
+    return inquirer.prompt([
+        {
+            name: "name",
+            type: "input",
+            message: "Please enter the Intern's name (Required)",
+            validate: InternName => {
+                if (InternName) {
+                  return true;
+                } else {
+                  console.log("Please enter the Intern's name!");
+                  return false;
+                }
+            }
+        },
+    
+        {
+            name: "email",
+            type: "input",
+            message: "Please enter the Intern's email address"
+        },
+
+        {
+            name: "school",
+            type: "input",
+            message: "Please enter the Intern's School"
+        }
+    ])
+    .then(function(data) {
+        const name = data.name;
+        const id = teamListArray.length + 1;
+        const email = data.email;
+        const school = data.school;
+        const teamMember = new Intern(name, id, email, school);
+        teamListArray.push(teamMember);
+    });
+};
+
 
 userPrompt();
 
