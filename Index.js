@@ -9,8 +9,8 @@ const { writeFile, copyFile } = require("./utils/generate-page");
 let teamListArray = [];
 
 // add function to enter team's name
-function userPrompt() {
-    inquirer.prompt([
+const userPrompt = () => {
+    return inquirer.prompt([
         {
             name: "teamName",
             type: "input",
@@ -33,8 +33,8 @@ function userPrompt() {
 };
 
 // add function to get manager's data
-function addManager() {
-    inquirer.prompt([
+const addManager = () => {
+   return inquirer.prompt([
         {
             name: "name",
             type: "input",
@@ -62,7 +62,7 @@ function addManager() {
         }
     ])
     .then(function(data) {
-        const name = name;
+        const name = data.name;
         const id = 1;
         const email = data.email;
         const officeNumber = data.officeNumber;
@@ -70,3 +70,45 @@ function addManager() {
         teamListArray.push(teamMember);
     });
 };
+
+// add function to get engineer's data
+const addEngineer = () => {
+    return inquirer.prompt([
+        {
+            name: "name",
+            type: "input",
+            message: "Please enter the Engineer's name (Required)",
+            validate: engineerName => {
+                if (engineerName) {
+                  return true;
+                } else {
+                  console.log("Please enter the Engineer's name!");
+                  return false;
+                }
+            }
+        },
+    
+        {
+            name: "email",
+            type: "input",
+            message: "Please enter the Engineer's email address"
+        },
+
+        {
+            name: "github",
+            type: "number",
+            message: "Please enter the Engineer's Github profile"
+        }
+    ])
+    .then(function(data) {
+        const name = data.name;
+        const id = teamListArray.length + 1;
+        const email = data.email;
+        const github = data.github;
+        const teamMember = new Engineer(name, id, email, github);
+        teamListArray.push(teamMember);
+    });
+};
+
+userPrompt();
+
